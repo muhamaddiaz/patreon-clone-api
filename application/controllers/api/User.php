@@ -26,8 +26,9 @@ class User extends \Restserver\Libraries\REST_Controller {
     $this->response($response);
   }
 
-  function index_put() {
-    $this->response("put request");
+  function index_post() {
+    $hello = $this->post('title');
+    $this->response("put request: ". $hello);
   }
 
 }
