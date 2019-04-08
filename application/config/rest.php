@@ -65,6 +65,7 @@ $config['rest_supported_formats'] = [
 $config['rest_status_field_name'] = 'status';
 
 /*
+
 |--------------------------------------------------------------------------
 | REST Message Field Name
 |--------------------------------------------------------------------------
@@ -110,7 +111,7 @@ $config['rest_realm'] = 'REST API';
 |           authorization key
 |
 */
-$config['rest_auth'] = FALSE;
+$config['rest_auth'] = 'basic';
 
 /*
 |--------------------------------------------------------------------------
@@ -126,7 +127,7 @@ $config['rest_auth'] = FALSE;
 | Note: If 'rest_auth' is set to 'session' then change 'auth_source' to the name of the session variable
 |
 */
-$config['auth_source'] = 'ldap';
+$config['auth_source'] = '';
 
 /*
 |--------------------------------------------------------------------------
