@@ -21,8 +21,8 @@ class Auth extends REST_Controller {
     $this->load->model('User_model', 'user');
   }
 
-  public function decode_get() {
-    $cookie = $this->input->cookie('token', true);
+  public function decode_post() {
+    $cookie = $this->post('token');
     $decoded = $this->jwt->DecodeToken($cookie);
     if($cookie) {
       return $this->response([
@@ -38,14 +38,30 @@ class Auth extends REST_Controller {
   }
 
   public function login_post() {
-    $cookie = $this->input->cookie('token', true);
-    if($cookie) {
+    $username = $this->post('username');
+    $password = $this->post('password');
+    if($this->user->loginUser($username, $password)) {
+      $user = $this->user->getUserByUsername($username);
+      $token = [
+        'full_name' => $user['full_name'],
+        'username' => $user['username'],
+        'email' => $user['email'],
+        'user_photo' => $user['user_photo'],
+        'user_background' => $user['user_background']
+      ];
       return $this->response([
-        'token' => $cookie 
+        'status' => TRUE,
+        'message' => [
+          'token' => $this->jwt->GenerateToken($token)
+        ]
       ], REST_Controller::HTTP_OK);
     } else {
       return $this->response([
-        'token' => 'no token for you!' 
+        'status' => FALSE,
+        'error' => 'Invalid login credential',
+        'message' => [
+          'token' => null
+        ]
       ], REST_Controller::HTTP_BAD_REQUEST);
     }
   }
@@ -53,28 +69,28 @@ class Auth extends REST_Controller {
   public function register_post() {
     $data = array(
       "full_name" => $this->post('full_name'),
+      "username" => $this->post('username'),
       "email" => $this->post('email'),
       "user_photo" => $this->post('user_photo'),
       "user_background" => $this->post('user_background'),
-      "password" => $this->post('password')
+      "password" => password_hash($this->post('password'), PASSWORD_DEFAULT)
     );
     if($this->user->registerUser($data)) {
-      $data = array(
-        "full_name" => $this->post('full_name'),
-        "email" => $this->post('email'),
-        "user_photo" => $this->post('user_photo'),
-        "user_background" => $this->post('user_background'),
-      );
-      $token = $this->jwt->generateToken($data);
-      $cookie = array(
-        'name' => 'token',
-        'value' => $token,
-        'expire' => 3600
-      );
-      $this->input->set_cookie($cookie);
+      $username = $this->post('username');
+      $user = $this->user->getUserByUsername($username);
+      $data = [
+        'full_name' => $user['full_name'],
+        'username' => $user['username'],
+        'email' => $user['email'],
+        'user_photo' => $user['user_photo'],
+        'user_background' => $user['user_background']
+      ];
+      $token = $this->jwt->GenerateToken($data);
       return $this->response([
         "status" => TRUE, 
-        "message" => "Created User!"
+        "message" => [
+          "token" => $token
+        ]
       ], REST_Controller::HTTP_CREATED);
     } else {
       return $this->response([
