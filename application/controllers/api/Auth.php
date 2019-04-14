@@ -43,6 +43,7 @@ class Auth extends REST_Controller {
     if($this->user->loginUser($username, $password)) {
       $user = $this->user->getUserByUsername($username);
       $token = [
+        'id' => $user['id'],
         'full_name' => $user['full_name'],
         'username' => $user['username'],
         'email' => $user['email'],
@@ -79,6 +80,7 @@ class Auth extends REST_Controller {
       $username = $this->post('username');
       $user = $this->user->getUserByUsername($username);
       $data = [
+        'id' => $user['id'],
         'full_name' => $user['full_name'],
         'username' => $user['username'],
         'email' => $user['email'],

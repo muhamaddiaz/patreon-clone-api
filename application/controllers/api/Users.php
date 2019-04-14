@@ -21,7 +21,7 @@ class Users extends REST_Controller {
 
   public function index_get($id = null) {
     if($id) {
-      $user = $this->user->getUser($id);
+      $user = $this->user->getUserById($id);
       if($user) {
         return $this->response([
           "status" => TRUE, 
@@ -46,11 +46,6 @@ class Users extends REST_Controller {
           "message" => "Users not found!"
         ], REST_Controller::HTTP_NOT_FOUND);
       }
-    }
-    
-  }
-
-  public function show_get($id) {
-    
+    }  
   }
 }
