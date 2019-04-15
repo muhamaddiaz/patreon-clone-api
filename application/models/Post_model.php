@@ -11,6 +11,12 @@ class Post_model extends CI_Model {
     return $this->db->get('posts')->result_array();
   }
 
+  public function getPostById($id) {
+    $this->db->where('id', $id);
+    $postArray = $this->db->get('posts')->result_array();
+    return $postArray[0];
+  }
+
   public function createPost($data) {
     return $this->db->insert('posts', $data);
   }
