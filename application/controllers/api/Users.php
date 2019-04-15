@@ -21,7 +21,7 @@ class Users extends REST_Controller {
 
   public function index_get($id = null) {
     if($id) {
-      $user = $this->user->getUserById($id);
+      $user = $this->user->getUserByUsername($id);
       if($user) {
         return $this->response([
           "status" => TRUE, 
