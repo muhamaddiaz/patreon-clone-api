@@ -101,4 +101,36 @@ class Auth extends REST_Controller {
       ], REST_Controller::HTTP_BAD_REQUEST);
     }
   }
+
+  public function update_put() {
+    $oldUsername = $this->put('oldusername');
+    $data = array(
+      "username" => $this->put('username'),
+      "creating" => $this->put('creating')
+    );
+    if($this->user->updateUser($oldUsername, $data)) {
+      $username = $this->put('username');
+      $user = $this->user->getUserByUsername($username);
+      $data = [
+        'id' => $user['id'],
+        'full_name' => $user['full_name'],
+        'username' => $user['username'],
+        'email' => $user['email'],
+        'user_photo' => $user['user_photo'],
+        'user_background' => $user['user_background']
+      ];
+      $token = $this->jwt->GenerateToken($data);
+      return $this->response([
+        "status" => TRUE, 
+        "message" => [
+          "token" => $token
+        ]
+      ], REST_Controller::HTTP_CREATED);
+    } else {
+      return $this->response([
+        "status" => FALSE, 
+        "message" => "User not created!"
+      ], REST_Controller::HTTP_BAD_REQUEST);
+    }
+  }
 }

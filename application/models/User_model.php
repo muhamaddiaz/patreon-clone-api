@@ -49,4 +49,21 @@ class User_model extends CI_Model {
     }
   }
 
+  public function updateUser($username, $data) {
+    $user = $this->getUserByUsername($username);
+    if($user) {
+      $updated = [
+        "full_name" => $user['full_name'],
+        "username" => $data['username'],
+        "email" => $user['email'],
+        "creating" => $data['creating'],
+        "password" => $user['password']
+      ];
+      $this->db->where('id', (int) $user['id']);
+      return $this->db->update('users', $updated);
+    } else {
+      return false;
+    }
+  }
+
 }
