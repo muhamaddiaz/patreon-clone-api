@@ -53,8 +53,8 @@ class User_model extends CI_Model {
     $user = $this->getUserByUsername($username);
     if($user) {
       $updated = [
-        "full_name" => $user['full_name'],
-        "username" => $data['username'],
+        "full_name" => $data['full_name'],
+        "username" => $user['username'],
         "email" => $user['email'],
         "creating" => $data['creating'],
         "password" => $user['password']

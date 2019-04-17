@@ -47,6 +47,7 @@ class Auth extends REST_Controller {
         'full_name' => $user['full_name'],
         'username' => $user['username'],
         'email' => $user['email'],
+        'creating' => $user['creating'],
         'user_photo' => $user['user_photo'],
         'user_background' => $user['user_background']
       ];
@@ -84,6 +85,7 @@ class Auth extends REST_Controller {
         'full_name' => $user['full_name'],
         'username' => $user['username'],
         'email' => $user['email'],
+        'creating' => $user['creating'],
         'user_photo' => $user['user_photo'],
         'user_background' => $user['user_background']
       ];
@@ -105,17 +107,17 @@ class Auth extends REST_Controller {
   public function update_put() {
     $oldUsername = $this->put('oldusername');
     $data = array(
-      "username" => $this->put('username'),
+      "full_name" => $this->put('full_name'),
       "creating" => $this->put('creating')
     );
     if($this->user->updateUser($oldUsername, $data)) {
-      $username = $this->put('username');
-      $user = $this->user->getUserByUsername($username);
+      $user = $this->user->getUserByUsername($oldUsername);
       $data = [
         'id' => $user['id'],
         'full_name' => $user['full_name'],
         'username' => $user['username'],
         'email' => $user['email'],
+        'creating' => $user['creating'],
         'user_photo' => $user['user_photo'],
         'user_background' => $user['user_background']
       ];
