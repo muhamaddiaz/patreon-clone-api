@@ -1,22 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Waktu pembuatan: 13 Apr 2019 pada 13.30
--- Versi server: 10.1.37-MariaDB
--- Versi PHP: 7.3.1
+-- Host: localhost:8889
+-- Generation Time: Apr 23, 2019 at 02:14 PM
+-- Server version: 5.7.25
+-- PHP Version: 7.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `patreon`
@@ -25,7 +17,33 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `keys`
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL,
+  `id_post` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `comment_body` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`id`, `id_post`, `id_user`, `comment_body`, `created_at`) VALUES
+(12, 5, 7, 'didiyeu bisa teu ?', '2019-04-15 16:06:27'),
+(15, 16, 3, 'didiyeu bisa teu ?', '2019-04-17 02:24:49'),
+(18, 19, 10, 'didiyeu', '2019-04-19 01:42:42'),
+(19, 16, 10, 'coba deui ahh', '2019-04-19 01:43:07'),
+(20, 18, 10, 'hi', '2019-04-19 01:43:57'),
+(21, 20, 11, 'comment coba', '2019-04-19 02:12:36');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `keys`
 --
 
 CREATE TABLE `keys` (
@@ -40,7 +58,7 @@ CREATE TABLE `keys` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data untuk tabel `keys`
+-- Dumping data for table `keys`
 --
 
 INSERT INTO `keys` (`id`, `user_id`, `key`, `level`, `ignore_limits`, `is_private_key`, `ip_addresses`, `date_created`) VALUES
@@ -49,7 +67,7 @@ INSERT INTO `keys` (`id`, `user_id`, `key`, `level`, `ignore_limits`, `is_privat
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `logs`
+-- Table structure for table `logs`
 --
 
 CREATE TABLE `logs` (
@@ -68,7 +86,34 @@ CREATE TABLE `logs` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `posts`
+--
+
+CREATE TABLE `posts` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `post_title` varchar(100) NOT NULL,
+  `post_body` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`id`, `id_user`, `post_title`, `post_body`, `created_at`) VALUES
+(5, 6, 'halo dunia lain lagi', 'Lorem ipsum sit dolor amet', '2019-04-15 00:06:18'),
+(8, 9, 'ini post pertama fevib', 'kenapa coba ?', '2019-04-15 00:19:44'),
+(16, 3, 'ini post pertama fevib', 'apa sih?', '2019-04-15 07:48:51'),
+(18, 7, 'ini post pertama fevib', 'hehehe', '2019-04-18 23:38:33'),
+(19, 10, 'Halo ini diaz', 'sanss', '2019-04-19 01:42:15'),
+(20, 11, 'Something happen ?', 'did happen ?', '2019-04-19 02:12:15'),
+(22, 7, 'ini post pertama sayah', 'hehe', '2019-04-19 02:29:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -76,6 +121,7 @@ CREATE TABLE `users` (
   `full_name` varchar(100) NOT NULL,
   `username` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
+  `creating` varchar(100) DEFAULT NULL,
   `user_photo` varchar(100) DEFAULT NULL,
   `user_background` varchar(100) DEFAULT NULL,
   `password` varchar(500) NOT NULL,
@@ -83,59 +129,103 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `full_name`, `username`, `email`, `user_photo`, `user_background`, `password`, `created_at`) VALUES
-(3, 'Muhamad Diaz', 'muhamaddiaz', 'muhamaddiaz10@gmail.com', 'foto1.jpg', 'foto2.jpg', '$2y$10$ExaZsgc/GMb94nZ21eI5PeyQsA41NksVNwA9BeUEeW4xHUUY092Uq', '2019-04-09 12:06:59'),
-(6, 'Muhamad Diaz', 'muhamaddiazr', 'muhamaddiaz11@gmail.com', 'foto1.jpg', 'foto2.jpg', '$2y$10$gQJ1uWvCmBt0a9fgyhsTFuZxgMjQJQ/PWlgBG/ZWs/Sq1NX5zD0ze', '2019-04-09 12:29:30');
+INSERT INTO `users` (`id`, `full_name`, `username`, `email`, `creating`, `user_photo`, `user_background`, `password`, `created_at`) VALUES
+(3, 'Samsul Ulum', 'muhamaddiaz', 'muhamaddiaz10@gmail.com', 'muhamaddiaz are creating cooked', 'foto1.jpg', 'foto2.jpg', '$2y$10$ExaZsgc/GMb94nZ21eI5PeyQsA41NksVNwA9BeUEeW4xHUUY092Uq', '2019-04-09 12:06:59'),
+(6, 'Muhamad Diaz', 'muhamaddiazr', 'muhamaddiaz11@gmail.com', NULL, 'foto1.jpg', 'foto2.jpg', '$2y$10$gQJ1uWvCmBt0a9fgyhsTFuZxgMjQJQ/PWlgBG/ZWs/Sq1NX5zD0ze', '2019-04-09 12:29:30'),
+(7, 'Samsul Ulum', 'samsss', 'sams@gmail.com', 'steven is creating Cooking Tutorial', NULL, NULL, '$2y$10$8jF0ZeDjULPzGS3qKJneyuiRunEDOHBDmuq1ZMnmufEdQbdvB1C8K', '2019-04-14 08:53:38'),
+(8, 'Sergio Ramos', 'sergio', 'sergio@gmail.com', NULL, NULL, NULL, '$2y$10$7yKjKP.gaVf/KEzT3EH32evxgjXSsp/4e8thzRzYGsIcCktB/q5mq', '2019-04-15 00:18:46'),
+(9, 'fevib', 'fevib', 'fevib@getcoolmail.info', NULL, NULL, NULL, '$2y$10$9eUfgGqTAIduAxr3gJBJDe0sblHnF46X0Pyqww50Ynm7a1nT3dJge', '2019-04-15 00:19:15'),
+(10, 'Diaz Ramdani', 'diazram', 'diazram@gmail.com', 'diazram is creating Something Amazing', NULL, NULL, '$2y$10$IAk4nrOM2Do282A2vWlh4Or.hE.YtLzcv93cRSOM9tZBUDgGqGR6S', '2019-04-19 01:41:21'),
+(11, 'Rae Carlos', 'rae', 'rae@gmail.com', 'rae are creating Video Maker', NULL, NULL, '$2y$10$wMrvmedFfm8lhMcArYNXpO7V/av.bsAif.h6DQ6zLK8nCjLfK9JMy', '2019-04-19 02:11:28');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `keys`
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `COMMENTS_POST_FOREIGN_KEY` (`id_post`),
+  ADD KEY `COMMENTS_USER_FOREIGN_KEY` (`id_user`);
+
+--
+-- Indexes for table `keys`
 --
 ALTER TABLE `keys`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `logs`
+-- Indexes for table `logs`
 --
 ALTER TABLE `logs`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `POSTS_USER_FOREIGN_KEY` (`id_user`);
+
+--
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `keys`
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `keys`
 --
 ALTER TABLE `keys`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `logs`
+-- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `users`
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `COMMENTS_POST_FOREIGN_KEY` FOREIGN KEY (`id_post`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `COMMENTS_USER_FOREIGN_KEY` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `POSTS_USER_FOREIGN_KEY` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE;
